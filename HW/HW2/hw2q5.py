@@ -60,19 +60,20 @@ with open(temp_file, 'r') as tfile, open(pat_file, 'r') as pfile, open(output_fi
         ACTG = defaultdict(int)
         for j in range((len(sequences))):
             ACTG[sequences[j]] += ord(base_qs[j]) - 33
-        if max(ACTG, key=ACTG.get) == DNA[key]:
+        ACTG[DNA[key]] = 0 #ignore correct base
+        
+        if ACTG[max(ACTG, key=ACTG.get)] <= 20: #if none are greater than 20 then we dont print
             valid = False
-        nr_base = " " + max(ACTG, key=ACTG.get)
-        if ACTG[max(ACTG, key=ACTG.get)] <= 20:
-            valid = False
-        nr_weight = ACTG[max(ACTG, key=ACTG.get)]
-        ACTG[max(ACTG, key=ACTG.get)] = 0
+            
+        nr_base = " " + max(ACTG, key=ACTG.get) #store base of heighest
+        nr_weight = ACTG[max(ACTG, key=ACTG.get)] #store weight of heighest
+        ACTG[max(ACTG, key=ACTG.get)] = 0 #look at next
         if ref_base != max(ACTG, key=ACTG.get) and ACTG[max(ACTG, key=ACTG.get)] > 20:
-            nr_base2 = " " + max(ACTG, key=ACTG.get)
-            nr_weight2 = ACTG[max(ACTG, key=ACTG.get)]
-        else:
-            nr_base2 = " -"
+            nr_base2 = " " + max(ACTG, key=ACTG.get) #store base of next heighest
+            nr_weight2 = ACTG[max(ACTG, key=ACTG.get)] #store weight of next heighest
+        else: #if next heighest doesnt count store nothing
+            nr_base2 = " -" 
             nr_weight2 = 0
-        if valid:
+        if valid: #output
             outfile.write(str(key) + " " + ref_base + nr_base + " " + str(nr_weight) + nr_base2 + " " + str(nr_weight2))
             outfile.write("\n")
