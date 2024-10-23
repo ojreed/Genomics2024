@@ -69,7 +69,7 @@ with open(input_file, 'r') as qfile, open(output_file, 'w') as outfile:
                 len_same = suffix_prefix_match(seq_a,seq_b,K)
                 if len_same > b_match[1]:
                     b_match = (id_b, len_same)
-                elif ( len_same == b_match[1]):
+                elif (len_same == b_match[1]):
                     b_match = (None, len_same)
                     
         if b_match[0] != None:
